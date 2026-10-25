@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>게임북 스크립트 가이드</title>
+<style>
+:root {
+  --bg: #f4ecda; --page: #fbf7ee; --ink: #2f2721; --muted: #85766a; --rule: #e2d5bb;
+  --accent: #8e3b28; --code-bg: #f1e8d4; --side: #efe5cf;
+  --t-keyword: #8e3b28; --t-labeldef: #1f5f8b; --t-target: #1f5f8b; --t-variable: #6b4c9a;
+  --t-string: #4b6b26; --t-interp: #b0571f; --t-comment: #9a8f80; --t-number: #7a4fa0;
+  --t-const: #7a4fa0; --t-func: #0f6d6a; --t-arrow: #8e3b28;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171b; --page: #1c1f24; --ink: #e2ddd2; --muted: #8d939c; --rule: #2e333a;
+    --accent: #e0a65e; --code-bg: #23272e; --side: #181b20;
+    --t-keyword: #e8946f; --t-labeldef: #7fb6e0; --t-target: #7fb6e0; --t-variable: #c3a5ef;
+    --t-string: #a9c97d; --t-interp: #f0b072; --t-comment: #7b828c; --t-number: #c3a5ef;
+    --t-const: #c3a5ef; --t-func: #6fd0c8; --t-arrow: #e8946f;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 16px; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.75 "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Noto Sans CJK KR", sans-serif; }
+.wrap { display: flex; max-width: 1180px; margin: 0 auto; }
+nav { position: sticky; top: 0; align-self: flex-start; width: 260px; flex: none; height: 100vh;
+  overflow-y: auto; padding: 28px 18px 40px 24px; font-size: 14px; line-height: 1.5; }
+nav .brand { font-weight: 700; font-size: 15px; margin-bottom: 14px; color: var(--accent); }
+nav a { display: block; color: var(--muted); text-decoration: none; padding: 3px 8px; border-radius: 6px; }
+nav a:hover { background: var(--side); color: var(--ink); }
+nav a.l3 { padding-left: 22px; font-size: 13px; }
+main { flex: 1; min-width: 0; background: var(--page); padding: 48px 56px 96px;
+  border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+h1 { font-size: 32px; line-height: 1.3; margin: 0 0 8px; }
+h2 { font-size: 23px; margin: 56px 0 12px; padding-top: 18px; border-top: 1px solid var(--rule); }
+h3 { font-size: 18px; margin: 32px 0 8px; }
+h4 { font-size: 16px; margin: 24px 0 6px; color: var(--muted); }
+p { margin: 10px 0; }
+a { color: var(--accent); }
+code { font-family: "D2Coding", "Consolas", "Menlo", "Noto Sans Mono CJK KR", monospace; font-size: 0.9em;
+  background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--code-bg); padding: 14px 18px; border-radius: 8px; overflow-x: auto;
+  line-height: 1.6; font-size: 14.5px; margin: 14px 0; border: 1px solid var(--rule); }
+pre code { background: none; padding: 0; font-size: inherit; }
+table { border-collapse: collapse; margin: 14px 0; width: 100%; font-size: 15px; }
+th, td { border-bottom: 1px solid var(--rule); padding: 7px 10px; text-align: left; vertical-align: top; }
+th { font-weight: 700; border-bottom-width: 2px; }
+blockquote { margin: 14px 0; padding: 10px 16px; border-left: 3px solid var(--accent);
+  background: var(--code-bg); border-radius: 0 8px 8px 0; color: var(--ink); }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 32px 0; }
+ul, ol { padding-left: 24px; }
+li { margin: 3px 0; }
+.t-keyword, .t-arrow { color: var(--t-keyword); font-weight: 700; }
+.t-labeldef { color: var(--t-labeldef); font-weight: 700; }
+.t-target { color: var(--t-target); }
+.t-variable { color: var(--t-variable); }
+.t-string { color: var(--t-string); }
+.t-interp { color: var(--t-interp); font-weight: 700; }
+.t-comment { color: var(--t-comment); font-style: italic; }
+.t-number, .t-const { color: var(--t-number); }
+.t-func { color: var(--t-func); }
+@media (max-width: 860px) {
+  .wrap { display: block; }
+  nav { position: static; width: auto; height: auto; padding: 20px 16px 8px; }
+  nav a.l3 { display: none; }
+  main { padding: 28px 16px 64px; border: 0; }
+  h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><div class="brand">게임북 스크립트 가이드</div>
+<a class="l2" href="#1-한눈에-보기">1. 한눈에 보기</a>
+<a class="l2" href="#2-기본-규칙">2. 기본 규칙</a>
+<a class="l3" href="#파일과-폴더">파일과 폴더</a>
+<a class="l3" href="#들여쓰기">들여쓰기</a>
+<a class="l3" href="#주석">주석</a>
+<a class="l3" href="#빈-줄">빈 줄</a>
+<a class="l2" href="#3-단락--label">3. 단락 — label</a>
+<a class="l2" href="#4-본문">4. 본문</a>
+<a class="l3" href="#한-문단">한 문단</a>
+<a class="l3" href="#여러-줄-본문">여러 줄 본문</a>
+<a class="l3" href="#변수-값-끼워-넣기--변수">변수 값 끼워 넣기 — {변수}</a>
+<a class="l2" href="#5-이미지--image">5. 이미지 — image</a>
+<a class="l2" href="#6-선택지--choice">6. 선택지 — choice</a>
+<a class="l3" href="#기본">기본</a>
+<a class="l3" href="#조건이-있는-선택지--if">조건이 있는 선택지 — if</a>
+<a class="l3" href="#고를-때-효과가-있는-선택지">고를 때 효과가 있는 선택지</a>
+<a class="l3" href="#if-안의-선택지">if 안의 선택지</a>
+<a class="l3" href="#선택지가-하나도-없으면">선택지가 하나도 없으면?</a>
+<a class="l2" href="#7-변수--default-set">7. 변수 — default, set</a>
+<a class="l3" href="#처음-값--default">처음 값 — default</a>
+<a class="l3" href="#값-바꾸기--set">값 바꾸기 — set</a>
+<a class="l3" href="#이름-규칙과-값의-종류">이름 규칙과 값의 종류</a>
+<a class="l2" href="#8-조건식">8. 조건식</a>
+<a class="l3" href="#비교">비교</a>
+<a class="l3" href="#논리">논리</a>
+<a class="l3" href="#계산">계산</a>
+<a class="l2" href="#9-조건-분기--if-elif-else">9. 조건 분기 — if, elif, else</a>
+<a class="l2" href="#10-함수--visited-random">10. 함수 — visited, random</a>
+<a class="l3" href="#visited단락--방문-횟수">visited(&quot;단락&quot;) — 방문 횟수</a>
+<a class="l3" href="#random최소-최대--무작위-수">random(최소, 최대) — 무작위 수</a>
+<a class="l2" href="#11-이동--goto">11. 이동 — goto</a>
+<a class="l2" href="#12-엔딩--end">12. 엔딩 — end</a>
+<a class="l2" href="#13-실행-순서-이해하기">13. 실행 순서 이해하기</a>
+<a class="l2" href="#14-자주-쓰는-패턴">14. 자주 쓰는 패턴</a>
+<a class="l3" href="#아이템을-한-번만-얻기">아이템을 한 번만 얻기</a>
+<a class="l3" href="#처음-방문과-다시-방문을-다르게">처음 방문과 다시 방문을 다르게</a>
+<a class="l3" href="#체력과-게임-오버">체력과 게임 오버</a>
+<a class="l3" href="#주사위-판정">주사위 판정</a>
+<a class="l3" href="#무작위-사건">무작위 사건</a>
+<a class="l3" href="#상점과-반복-선택">상점과 반복 선택</a>
+<a class="l3" href="#여러-조건을-모아-엔딩-나누기">여러 조건을 모아 엔딩 나누기</a>
+<a class="l3" href="#글자-변수로-선택-기억하기">글자 변수로 선택 기억하기</a>
+<a class="l3" href="#종이-게임북처럼-번호-단락-쓰기">종이 게임북처럼 번호 단락 쓰기</a>
+<a class="l3" href="#같은-장면에서-그림만-바꾸기">같은 장면에서 그림만 바꾸기</a>
+<a class="l2" href="#15-오류-메시지와-해결-방법">15. 오류 메시지와 해결 방법</a>
+<a class="l2" href="#16-편집기와-실행">16. 편집기와 실행</a>
+<a class="l3" href="#처음-한-번-편집기-준비">처음 한 번: 편집기 준비</a>
+<a class="l3" href="#쓰고-확인하기">쓰고 확인하기</a>
+<a class="l3" href="#vs-code-확장의-문장-틀">VS Code 확장의 문장 틀</a>
+<a class="l3" href="#게임-창-단축키">게임 창 단축키</a>
+<a class="l3" href="#런처의-다른-기능">런처의 다른 기능</a>
+<a class="l2" href="#17-설정--gamejson">17. 설정 — game.json</a>
+<a class="l2" href="#18-문법-요약표">18. 문법 요약표</a>
+</nav>
+<main>
+<h1 id="게임북-스크립트-가이드">게임북 스크립트 가이드</h1>
+<p>GameBook Studio의 스크립트(<code>.gb</code>)로 쓸 수 있는 모든 문법을 정리한 문서입니다. 처음이라면 <strong>1장 ~ 3장</strong>을 순서대로 읽고, 나머지는 필요할 때 찾아보세요. 런처의 <strong>문법 가이드</strong> 버튼이나 게임 창(개발 모드)의 <code>F1</code>로 언제든 열 수 있습니다.</p>
+<h2 id="1-한눈에-보기">1. 한눈에 보기</h2>
+<p>게임북은 <strong>단락</strong>들로 이루어집니다. 플레이어는 한 번에 단락 하나를 보며, 화면에는 <strong>이미지 한 장 + 본문 + 선택지</strong>가 나옵니다. 선택지를 고르면 다른 단락으로 넘어갑니다.</p>
+<pre><code><span class="t-keyword">default</span> <span class="t-variable">열쇠</span> = <span class="t-const">false</span>              <span class="t-comment"># 변수의 처음 값</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">start</span>:                      <span class="t-comment"># 단락 &#x27;start&#x27; (게임은 여기서 시작)</span>
+    <span class="t-keyword">image</span> <span class="t-string">&quot;room.png&quot;</span>              <span class="t-comment"># 이 단락의 이미지</span>
+    <span class="t-string">&quot;낯선 방에서 눈을 떴다.&quot;</span>        <span class="t-comment"># 본문</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;문을 연다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">문</span>        <span class="t-comment"># 선택지: 고르면 &#x27;문&#x27; 단락으로</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;창밖을 본다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">창문</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">창문</span>:
+    <span class="t-string">&quot;창틀 아래에서 열쇠를 찾았다.&quot;</span>
+    <span class="t-keyword">set</span> <span class="t-variable">열쇠</span> = <span class="t-const">true</span>               <span class="t-comment"># 변수 값 바꾸기</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;문으로 간다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">문</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">문</span>:
+    <span class="t-keyword">if</span> 열쇠:                      <span class="t-comment"># 조건에 따라 다른 내용</span>
+        <span class="t-string">&quot;열쇠가 맞는다. 문이 열린다.&quot;</span>
+        <span class="t-keyword">end</span> <span class="t-string">&quot;탈출&quot;</span>                <span class="t-comment"># 엔딩</span>
+    <span class="t-string">&quot;문은 잠겨 있다.&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;방을 둘러본다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">창문</span></code></pre>
+<p>이 예제에 나온 문장이 스크립트 문법의 거의 전부입니다.</p>
+<table><tr><th>문장</th><th>하는 일</th><th>자세히</th></tr><tr><td><code>label 이름:</code></td><td>단락을 만든다</td><td><a href="#3-단락--label">3장</a></td></tr><tr><td><code>&quot;글&quot;</code></td><td>본문 한 문단</td><td><a href="#4-본문">4장</a></td></tr><tr><td><code>image &quot;파일&quot;</code></td><td>단락 이미지</td><td><a href="#5-이미지--image">5장</a></td></tr><tr><td><code>choice &quot;글&quot; -&gt; 단락</code></td><td>선택지</td><td><a href="#6-선택지--choice">6장</a></td></tr><tr><td><code>default 이름 = 값</code></td><td>변수의 처음 값</td><td><a href="#7-변수--default-set">7장</a></td></tr><tr><td><code>set 이름 = 값</code></td><td>변수 바꾸기 (<code>+=</code>, <code>-=</code>도 가능)</td><td><a href="#7-변수--default-set">7장</a></td></tr><tr><td><code>if 조건:</code> / <code>elif</code> / <code>else:</code></td><td>조건 분기</td><td><a href="#9-조건-분기--if-elif-else">9장</a></td></tr><tr><td><code>goto 단락</code></td><td>다른 단락으로 바로 이동</td><td><a href="#11-이동--goto">11장</a></td></tr><tr><td><code>end &quot;제목&quot;</code></td><td>엔딩</td><td><a href="#12-엔딩--end">12장</a></td></tr><tr><td><code># 메모</code></td><td>주석 (게임에 안 보임)</td><td><a href="#2-기본-규칙">2장</a></td></tr></table>
+<h2 id="2-기본-규칙">2. 기본 규칙</h2>
+<h3 id="파일과-폴더">파일과 폴더</h3>
+<ul><li>스크립트는 프로젝트의 <code>script</code> 폴더에 있는 <code>.gb</code> 파일입니다. 파일은 <strong>UTF-8</strong>로 저장합니다 (VS Code 등 요즘 편집기는 기본이 UTF-8입니다).</li><li>파일을 여러 개로 나눠도 됩니다. <code>script</code> 폴더(하위 폴더 포함)의 모든 <code>.gb</code> 파일이 하나로 합쳐집니다. 예) <code>1장.gb</code>, <code>2장.gb</code>, <code>엔딩.gb</code></li><li>다른 파일에 있는 단락으로도 그냥 이름만 써서 이동할 수 있습니다.</li></ul>
+<h3 id="들여쓰기">들여쓰기</h3>
+<p>Python처럼 <strong>들여쓰기로 구조를 나타냅니다.</strong> 단락에 속한 문장은 <code>label</code> 줄보다 들여쓰고, <code>if</code>나 선택지 블록에 속한 문장은 그보다 한 번 더 들여씁니다.</p>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">숲</span>:                 <span class="t-comment"># 들여쓰기 없음</span>
+    <span class="t-string">&quot;숲이다.&quot;</span>              <span class="t-comment"># 단락 안: 4칸</span>
+    <span class="t-keyword">if</span> 횃불:
+        <span class="t-string">&quot;횃불이 밝다.&quot;</span>      <span class="t-comment"># if 안: 8칸</span></code></pre>
+<ul><li>같은 블록의 줄은 들여쓰기 칸 수가 정확히 같아야 합니다. 4칸을 권장합니다.</li><li>탭 문자는 4칸으로 계산됩니다. 게임북 확장을 설치한 VS Code에서는 <code>Tab</code> 키를 누르면 4칸 공백이 들어갑니다.</li><li><code>label</code>과 <code>default</code>는 들여쓰지 않고 맨 앞에 씁니다.</li><li>콜론(<code>:</code>)으로 끝나는 줄(<code>label</code>, <code>if</code>, <code>elif</code>, <code>else</code>, 효과가 있는 <code>choice</code>) 다음 줄은 반드시 들여씁니다.</li></ul>
+<h3 id="주석">주석</h3>
+<p><code>#</code> 뒤의 내용은 무시됩니다. 줄 전체를 주석으로 쓸 수도, 문장 끝에 붙일 수도 있습니다. 따옴표 안의 <code>#</code>은 주석이 아니라 글자입니다.</p>
+<pre><code><span class="t-comment"># 2장: 동굴 편</span>
+<span class="t-keyword">label</span> <span class="t-labeldef">동굴</span>:
+    <span class="t-string">&quot;#3 번 갱도&quot;</span>            <span class="t-comment"># ← 이 &#x27;#3&#x27;은 본문에 그대로 보입니다</span>
+    <span class="t-keyword">set</span> <span class="t-variable">체력</span> -= <span class="t-number">1</span>           <span class="t-comment"># 동굴은 춥다</span></code></pre>
+<h3 id="빈-줄">빈 줄</h3>
+<p>빈 줄은 아무 의미가 없습니다. 읽기 좋게 단락 사이에 자유롭게 넣으세요.</p>
+<h2 id="3-단락--label">3. 단락 — <code>label</code></h2>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">단락이름</span>:
+    (내용)</code></pre>
+<ul><li>이름에는 <strong>한글, 영문, 숫자, </strong><strong><code>_</code></strong><strong>(밑줄)</strong> 을 쓸 수 있습니다. 띄어쓰기는 안 되므로 <code>동굴_입구</code>처럼 밑줄로 잇습니다.</li><li>숫자만으로 된 이름도 됩니다. 종이 게임북처럼 <code>label 1:</code>, <code>label 147:</code> 식으로 만들 수 있습니다.</li><li>모든 파일을 통틀어 같은 이름의 단락은 하나만 있어야 합니다.</li><li>게임은 <code>start</code> 단락에서 시작합니다. 다른 단락에서 시작하려면 <code>game.json</code>의 <code>&quot;start&quot;</code>를 바꿉니다.</li><li>단락 안에는 내용이 한 줄 이상 있어야 합니다.</li></ul>
+<p>단락은 <strong>위에서 아래로 차례대로 실행</strong>되어 한 화면을 만듭니다. 자세한 실행 순서는 <a href="#13-실행-순서-이해하기">13장</a>에 있습니다.</p>
+<h2 id="4-본문">4. 본문</h2>
+<h3 id="한-문단">한 문단</h3>
+<p>큰따옴표(<code>&quot;</code>)나 작은따옴표(<code>&#x27;</code>)로 감쌉니다. 문장 하나가 화면의 한 문단이 됩니다.</p>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">바닷가</span>:
+    <span class="t-string">&quot;파도 소리가 들린다.&quot;</span>
+    <span class="t-string">&quot;멀리 등대가 보인다.&quot;</span>      <span class="t-comment"># 두 번째 문단</span></code></pre>
+<p>따옴표 안에서 쓸 수 있는 특수 표기:</p>
+<table><tr><th>표기</th><th>결과</th></tr><tr><td><code>\n</code></td><td>줄바꿈</td></tr><tr><td><code>\&quot;</code></td><td>큰따옴표 글자 (<code>&quot;그가 \&quot;멈춰!\&quot; 라고 외쳤다.&quot;</code>)</td></tr><tr><td><code>\&#x27;</code></td><td>작은따옴표 글자</td></tr><tr><td><code>\\</code></td><td>역슬래시 글자</td></tr></table>
+<p>큰따옴표가 많은 대사는 작은따옴표로 감싸면 편합니다: <code>&#x27;&quot;멈춰!&quot; 그가 외쳤다.&#x27;</code></p>
+<h3 id="여러-줄-본문">여러 줄 본문</h3>
+<p>긴 글은 따옴표 세 개(<code>&quot;&quot;&quot;</code>)로 감쌉니다. 쓴 그대로 줄이 바뀌고, 빈 줄도 그대로 빈 줄로 보입니다. 앞쪽 공통 들여쓰기는 자동으로 지워집니다. 이 안에서는 <code>\n</code> 같은 특수 표기가 처리되지 않습니다.</p>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">편지</span>:
+    <span class="t-string">&quot;&quot;&quot;</span>
+<span class="t-string">    친애하는 벗에게.</span>
+
+<span class="t-string">    이 편지가 닿을 즈음이면</span>
+<span class="t-string">    나는 이미 바다 위에 있을 걸세.</span>
+<span class="t-string">    &quot;&quot;&quot;</span></code></pre>
+<h3 id="변수-값-끼워-넣기--변수">변수 값 끼워 넣기 — <code>{변수}</code></h3>
+<p>본문과 선택지 글에 <code>{변수이름}</code>을 쓰면 그 자리에 현재 값이 들어갑니다.</p>
+<pre><code><span class="t-keyword">default</span> <span class="t-variable">금화</span> = <span class="t-number">10</span>
+<span class="t-keyword">default</span> <span class="t-variable">동료</span> = <span class="t-string">&quot;엘라&quot;</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">여관</span>:
+    <span class="t-string">&quot;</span><span class="t-interp">{동료}</span><span class="t-string">가 지갑을 열어 보였다. 남은 금화는 </span><span class="t-interp">{금화}</span><span class="t-string">개.&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;방을 잡는다 (금화 </span><span class="t-interp">{금화}</span><span class="t-string">개 중 3개)&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">방</span></code></pre>
+<ul><li><code>참</code>/<code>거짓</code> 값은 &quot;참&quot;, &quot;거짓&quot;으로 표시됩니다.</li><li>중괄호 안에는 <strong>변수 이름만</strong> 쓸 수 있습니다. <code>{금화 * 2}</code> 같은 계산은 안 되므로, 필요하면 먼저 <code>set</code>으로 계산해 두세요.</li><li>중괄호 글자 자체를 쓰려면 <code>{{</code>, <code>}}</code>로 씁니다.</li><li>값을 넣은 적 없는 변수는 <code>0</code>으로 표시됩니다.</li></ul>
+<h2 id="5-이미지--image">5. 이미지 — <code>image</code></h2>
+<pre><code><span class="t-keyword">image</span> <span class="t-string">&quot;cave.png&quot;</span>           <span class="t-comment"># images 폴더의 cave.png</span>
+<span class="t-keyword">image</span> <span class="t-string">&quot;items/key.png&quot;</span>      <span class="t-comment"># images/items 폴더의 key.png</span>
+<span class="t-keyword">image</span> <span class="t-const">none</span>                 <span class="t-comment"># 이미지 없음 (none 대신 없음 도 가능)</span></code></pre>
+<ul><li>이미지는 <strong>그 단락에서만</strong> 보입니다. 다음 단락에 <code>image</code>가 없으면 이미지 없이 본문만 나옵니다.</li><li>한 단락에서 <code>image</code>를 여러 번 실행하면 <strong>마지막 것</strong>이 쓰입니다. 그래서 <code>if</code> 안에 넣어 상황별로 다른 그림을 보여 줄 수 있습니다.</li><li>이미지는 화면 폭에 맞게 자동으로 줄어듭니다 (늘어나지는 않음). 가로 960px 정도면 충분합니다.</li><li>PNG, JPG, GIF, WebP, BMP를 쓸 수 있습니다. 게임 창과 HTML로 내보낸 게임 모두에서 보입니다. (GIF는 첫 장면만 보입니다)</li><li>파일 이름은 대소문자까지 정확히 맞춰 쓰세요. Windows에서는 <code>Cave.png</code>와 <code>cave.png</code>가 같지만 macOS·Linux에서는 다른 파일입니다. 검사 기능이 이를 알려 줍니다.</li><li>그림은 런처의 <strong>이미지 폴더</strong> 버튼으로 연 <code>images</code> 폴더에 넣습니다. 그림이 창보다 크면 창에 맞게 줄여서 보여 줍니다.</li></ul>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">등대</span>:
+    <span class="t-keyword">image</span> <span class="t-string">&quot;lighthouse_dark.png&quot;</span>
+    <span class="t-keyword">if</span> 불_켬:
+        <span class="t-keyword">image</span> <span class="t-string">&quot;lighthouse_lit.png&quot;</span>     <span class="t-comment"># 조건이 맞으면 이 그림으로 바뀜</span>
+    <span class="t-string">&quot;등대가 서 있다.&quot;</span></code></pre>
+<h2 id="6-선택지--choice">6. 선택지 — <code>choice</code></h2>
+<h3 id="기본">기본</h3>
+<pre><code><span class="t-keyword">choice</span> <span class="t-string">&quot;보여 줄 글&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">이동할단락</span></code></pre>
+<ul><li>선택지는 적은 순서대로 화면 아래에 나열되고, 앞에서부터 번호(1~9)가 붙습니다. 플레이어는 클릭하거나 숫자 키로 고릅니다.</li><li>선택지 글에도 <code>{변수}</code>를 쓸 수 있습니다.</li></ul>
+<h3 id="조건이-있는-선택지--if">조건이 있는 선택지 — <code>if</code></h3>
+<pre><code><span class="t-keyword">choice</span> <span class="t-string">&quot;열쇠로 문을 연다&quot;</span> <span class="t-keyword">if</span> 열쇠 <span class="t-arrow">-&gt;</span> <span class="t-target">방안</span>
+<span class="t-keyword">choice</span> <span class="t-string">&quot;빵을 산다&quot;</span> <span class="t-keyword">if</span> 금화 &gt;= <span class="t-number">2</span> <span class="t-arrow">-&gt;</span> <span class="t-target">빵집</span>
+<span class="t-keyword">choice</span> <span class="t-string">&quot;처음 보는 길로 간다&quot;</span> <span class="t-keyword">if</span> <span class="t-keyword">not</span> <span class="t-func">visited</span>(<span class="t-string">&quot;뒷길&quot;</span>) <span class="t-arrow">-&gt;</span> <span class="t-target">뒷길</span></code></pre>
+<ul><li>조건이 맞지 않으면 그 선택지는 <strong>숨겨집니다.</strong></li><li><code>game.json</code>에서 <code>&quot;show_locked_choices&quot;: true</code>로 바꾸면 숨기지 않고 <strong>흐리게(고를 수 없게)</strong> 보여 줍니다. &quot;열쇠가 있었다면…&quot; 하고 아쉬움을 주는 연출에 좋습니다.</li><li>조건식 쓰는 법은 <a href="#8-조건식">8장</a>을 보세요.</li></ul>
+<h3 id="고를-때-효과가-있는-선택지">고를 때 효과가 있는 선택지</h3>
+<p>선택지 줄 끝에 콜론(<code>:</code>)을 붙이고 아래에 들여써서 <code>set</code>이나 <code>if</code>를 쓰면, 그 선택지를 <strong>고른 순간</strong> 실행된 뒤 다음 단락으로 넘어갑니다.</p>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">상점</span>:
+    <span class="t-string">&quot;상인이 물건을 늘어놓았다. 금화 </span><span class="t-interp">{금화}</span><span class="t-string">개.&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;빵을 산다 (2금화)&quot;</span> <span class="t-keyword">if</span> 금화 &gt;= <span class="t-number">2</span> <span class="t-arrow">-&gt;</span> <span class="t-target">상점</span>:
+        <span class="t-keyword">set</span> <span class="t-variable">금화</span> -= <span class="t-number">2</span>
+        <span class="t-keyword">set</span> <span class="t-variable">빵</span> += <span class="t-number">1</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;가게를 나선다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">시장</span></code></pre>
+<ul><li>블록 안에는 <code>set</code>과 <code>if</code>만 쓸 수 있습니다. 본문, 이미지, 다른 선택지는 넣을 수 없습니다. 고른 뒤에 보여 줄 글은 이동할 단락에 쓰세요.</li><li>위 예처럼 <strong>같은 단락으로 돌아오게</strong> 하면 상점·대화처럼 반복 선택하는 장면을 만들 수 있습니다.</li></ul>
+<h3 id="if-안의-선택지"><code>if</code> 안의 선택지</h3>
+<p><code>if</code> 블록 안에 선택지를 넣으면, 조건이 맞을 때만 그 선택지들이 추가됩니다. 조건 선택지를 여러 개 같은 조건으로 묶을 때 편합니다.</p>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">갈림길</span>:
+    <span class="t-string">&quot;길이 셋으로 갈라진다.&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;왼쪽 길&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">왼쪽</span>
+    <span class="t-keyword">if</span> 지도:
+        <span class="t-string">&quot;지도에 숨은 길이 표시되어 있다.&quot;</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;숨은 길&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">비밀_길</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;지도를 다시 본다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">지도_보기</span></code></pre>
+<h3 id="선택지가-하나도-없으면">선택지가 하나도 없으면?</h3>
+<p>선택지·<code>goto</code>·<code>end</code>가 하나도 실행되지 않은 단락은 <strong>막다른 곳</strong>이 됩니다. 플레이어에게는 &quot;이야기가 여기서 멈췄습니다&quot;와 함께 [뒤로 가기 / 처음부터] 버튼만 나옵니다. 검사 기능이 이런 단락을 경고로 알려 주므로, 조건 선택지만 있는 단락에는 조건 없는 선택지나 <code>else</code>를 하나 두세요.</p>
+<h2 id="7-변수--default-set">7. 변수 — <code>default</code>, <code>set</code></h2>
+<p>변수는 이야기의 상태(아이템, 돈, 호감도, 이미 한 일 등)를 기억하는 이름표입니다.</p>
+<h3 id="처음-값--default">처음 값 — <code>default</code></h3>
+<pre><code><span class="t-keyword">default</span> <span class="t-variable">금화</span> = <span class="t-number">10</span>
+<span class="t-keyword">default</span> <span class="t-variable">횃불</span> = <span class="t-const">false</span>
+<span class="t-keyword">default</span> <span class="t-variable">동료</span> = <span class="t-string">&quot;엘라&quot;</span>
+<span class="t-keyword">default</span> <span class="t-variable">최대체력</span> = <span class="t-number">12</span>
+<span class="t-keyword">default</span> <span class="t-variable">체력</span> = 최대체력      <span class="t-comment"># 위에서 정한 변수를 써도 됨</span></code></pre>
+<ul><li><code>label</code> 밖, 맨 앞(들여쓰기 없이)에 씁니다. 보통 파일 맨 위에 모아 둡니다.</li><li>새 게임을 시작할 때 위에서부터 차례로 값이 정해집니다. 파일이 여러 개면 파일 이름 순서입니다.</li><li><code>default</code> 없이 <code>set</code>으로만 써도 동작하지만, 처음 값을 분명히 적어 두는 편이 실수가 적습니다.</li></ul>
+<h3 id="값-바꾸기--set">값 바꾸기 — <code>set</code></h3>
+<pre><code><span class="t-keyword">set</span> <span class="t-variable">횃불</span> = <span class="t-const">true</span>          <span class="t-comment"># 값 넣기</span>
+<span class="t-keyword">set</span> <span class="t-variable">금화</span> += <span class="t-number">5</span>            <span class="t-comment"># 더하기</span>
+<span class="t-keyword">set</span> <span class="t-variable">체력</span> -= <span class="t-number">2</span>            <span class="t-comment"># 빼기</span>
+<span class="t-keyword">set</span> <span class="t-variable">공격력</span> = 힘 * <span class="t-number">2</span> + <span class="t-number">1</span>  <span class="t-comment"># 계산한 값 넣기</span>
+<span class="t-keyword">set</span> <span class="t-variable">동료</span> = <span class="t-string">&quot;카이&quot;</span>        <span class="t-comment"># 글자 값</span>
+<span class="t-keyword">set</span> <span class="t-variable">주사위</span> = <span class="t-func">random</span>(<span class="t-number">1</span>, <span class="t-number">6</span>)</code></pre>
+<h3 id="이름-규칙과-값의-종류">이름 규칙과 값의 종류</h3>
+<ul><li>변수 이름에는 한글, 영문, 숫자, <code>_</code>를 쓸 수 있고 <strong>숫자로 시작할 수 없습니다.</strong> 예) <code>금화</code>, <code>has_key</code>, <code>열쇠2</code></li><li><code>if</code>, <code>and</code>, <code>not</code>, <code>true</code> 같은 문법 단어는 이름으로 쓸 수 없습니다.</li></ul>
+<table><tr><th>종류</th><th>예</th><th>설명</th></tr><tr><td>정수</td><td><code>3</code>, <code>-1</code>, <code>100</code></td><td>개수, 체력, 점수</td></tr><tr><td>소수</td><td><code>1.5</code></td><td><code>/</code> 나눗셈 결과도 소수가 됩니다</td></tr><tr><td>참/거짓</td><td><code>true</code>, <code>false</code>, <code>참</code>, <code>거짓</code></td><td>아이템 보유, 사건 발생 여부 (<code>True</code>/<code>False</code>도 가능)</td></tr><tr><td>글자</td><td><code>&quot;엘라&quot;</code>, <code>&#x27;북쪽&#x27;</code></td><td>이름, 선택한 길 등</td></tr></table>
+<p><strong>값을 넣은 적 없는 변수는 </strong><strong><code>0</code></strong><strong>(거짓)으로 취급됩니다.</strong> 그래서 <code>if 열쇠:</code>는 <code>열쇠</code>를 한 번도 설정하지 않았어도 오류 없이 거짓이 됩니다. 반대로 이름을 잘못 쓰면(예: <code>열쇄</code>) 조용히 0이 되므로, 검사 기능이 &quot;값을 넣는 곳이 없는 변수&quot;를 경고로 알려 줍니다.</p>
+<h2 id="8-조건식">8. 조건식</h2>
+<p><code>if</code>, <code>elif</code>, 조건 선택지, <code>set</code>의 오른쪽에 쓰는 식입니다.</p>
+<h3 id="비교">비교</h3>
+<table><tr><th>연산</th><th>뜻</th><th>예</th></tr><tr><td><code>==</code></td><td>같다</td><td><code>동료 == &quot;엘라&quot;</code></td></tr><tr><td><code>!=</code></td><td>다르다</td><td><code>방향 != &quot;북&quot;</code></td></tr><tr><td><code>&lt;</code>, <code>&lt;=</code></td><td>작다, 작거나 같다</td><td><code>체력 &lt;= 0</code></td></tr><tr><td><code>&gt;</code>, <code>&gt;=</code></td><td>크다, 크거나 같다</td><td><code>금화 &gt;= 3</code></td></tr></table>
+<p><code>1 &lt;= 주사위 &lt;= 3</code>처럼 이어서 쓸 수도 있습니다. <code>=</code>는 하나만 쓰면 비교가 아니라 오류입니다(<code>==</code>로 쓰세요).</p>
+<h3 id="논리">논리</h3>
+<table><tr><th>연산</th><th>뜻</th><th>예</th></tr><tr><td><code>and</code></td><td>그리고</td><td><code>열쇠 and 횃불</code></td></tr><tr><td><code>or</code></td><td>또는</td><td><code>금화 &gt;= 10 or 할인권</code></td></tr><tr><td><code>not</code></td><td>아니다</td><td><code>not visited(&quot;동굴&quot;)</code></td></tr><tr><td><code>( )</code></td><td>묶기</td><td><code>(열쇠 or 곡괭이) and not 함정</code></td></tr></table>
+<p>변수 이름만 쓰면 &quot;참인가?&quot;라는 뜻입니다. <code>0</code>, <code>false</code>, 빈 글자 <code>&quot;&quot;</code>는 거짓이고 나머지는 참입니다.</p>
+<h3 id="계산">계산</h3>
+<table><tr><th>연산</th><th>뜻</th><th>예</th></tr><tr><td><code>+</code>, <code>-</code>, <code>*</code></td><td>더하기, 빼기, 곱하기</td><td><code>힘 * 2 + 1</code></td></tr><tr><td><code>/</code></td><td>나누기 (소수)</td><td><code>7 / 2</code> → <code>3.5</code></td></tr><tr><td><code>//</code></td><td>나누기 (몫, 정수)</td><td><code>7 // 2</code> → <code>3</code></td></tr><tr><td><code>%</code></td><td>나머지</td><td><code>날짜 % 7</code></td></tr></table>
+<p>글자끼리 <code>+</code>로 이을 수도 있습니다: <code>set 칭호 = 이름 + &quot; 경&quot;</code>.</p>
+<h2 id="9-조건-분기--if-elif-else">9. 조건 분기 — <code>if</code>, <code>elif</code>, <code>else</code></h2>
+<pre><code><span class="t-keyword">if</span> 조건:
+    (조건이 참일 때)
+<span class="t-keyword">elif</span> 다른조건:
+    (앞 조건은 거짓이고 이 조건이 참일 때)
+<span class="t-keyword">else</span>:
+    (모두 거짓일 때)</code></pre>
+<ul><li><code>elif</code>와 <code>else</code>는 없어도 됩니다. <code>elif</code>는 여러 개 쓸 수 있습니다.</li><li>위에서부터 처음으로 참인 <strong>한 곳만</strong> 실행됩니다.</li><li>안에는 본문, 이미지, <code>set</code>, 선택지, <code>goto</code>, <code>end</code>, 또 다른 <code>if</code>까지 무엇이든 넣을 수 있습니다.</li><li>줄 끝 콜론(<code>:</code>)을 잊지 마세요. <code>else</code>는 반드시 <code>else:</code>로 씁니다.</li></ul>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">문지기</span>:
+    <span class="t-keyword">if</span> 호감도 &gt;= <span class="t-number">5</span>:
+        <span class="t-string">&quot;문지기가 웃으며 길을 비켜 준다.&quot;</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;들어간다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">성안</span>
+    <span class="t-keyword">elif</span> 금화 &gt;= <span class="t-number">10</span>:
+        <span class="t-string">&quot;문지기가 손바닥을 내민다.&quot;</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;금화 10개를 건넨다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">성안</span>:
+            <span class="t-keyword">set</span> <span class="t-variable">금화</span> -= <span class="t-number">10</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;돌아선다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">성문앞</span>
+    <span class="t-keyword">else</span>:
+        <span class="t-string">&quot;문지기가 창을 겨눈다. 썩 꺼져라!&quot;</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;물러난다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">성문앞</span></code></pre>
+<h2 id="10-함수--visited-random">10. 함수 — <code>visited</code>, <code>random</code></h2>
+<p>조건식과 <code>set</code>에서 쓸 수 있는 함수는 두 가지입니다.</p>
+<h3 id="visited단락--방문-횟수"><code>visited(&quot;단락&quot;)</code> — 방문 횟수</h3>
+<p>그 단락에 들어간 횟수를 돌려줍니다. <strong>지금 보고 있는 단락도 들어온 순간 1이 늘어난</strong> 뒤 계산됩니다.</p>
+<table><tr><th>상황</th><th>값</th></tr><tr><td>한 번도 안 간 단락</td><td><code>0</code></td></tr><tr><td>지금 처음 들어와 있는 단락</td><td><code>1</code></td></tr><tr><td>두 번째로 들어와 있는 단락</td><td><code>2</code></td></tr></table>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">마을</span>:
+    <span class="t-keyword">if</span> <span class="t-func">visited</span>(<span class="t-string">&quot;마을&quot;</span>) == <span class="t-number">1</span>:
+        <span class="t-string">&quot;처음 와 보는 마을이다. 사람들이 낯선 눈으로 쳐다본다.&quot;</span>
+    <span class="t-keyword">else</span>:
+        <span class="t-string">&quot;다시 마을로 돌아왔다.&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;우물을 살펴본다&quot;</span> <span class="t-keyword">if</span> <span class="t-keyword">not</span> <span class="t-func">visited</span>(<span class="t-string">&quot;우물&quot;</span>) <span class="t-arrow">-&gt;</span> <span class="t-target">우물</span></code></pre>
+<h3 id="random최소-최대--무작위-수"><code>random(최소, 최대)</code> — 무작위 수</h3>
+<p>최소 이상 최대 이하의 정수 하나를 돌려줍니다. 주사위 판정이나 무작위 사건에 씁니다.</p>
+<pre><code><span class="t-keyword">set</span> <span class="t-variable">주사위</span> = <span class="t-func">random</span>(<span class="t-number">1</span>, <span class="t-number">6</span>)
+<span class="t-keyword">if</span> <span class="t-func">random</span>(<span class="t-number">1</span>, <span class="t-number">100</span>) &lt;= <span class="t-number">30</span>:         <span class="t-comment"># 30% 확률</span>
+    <span class="t-string">&quot;갑자기 비가 쏟아진다.&quot;</span></code></pre>
+<ul><li><strong>뒤로 가기나 불러오기로 같은 선택을 다시 해도 결과가 같습니다.</strong> 플레이어가 &quot;다시 굴리기&quot;를 반복해 결과를 바꿀 수 없게 하기 위해서입니다.</li><li>결과를 플레이어에게 보여 주고 싶다면 변수에 저장해서 <code>{주사위}</code>처럼 표시하세요.</li></ul>
+<h2 id="11-이동--goto">11. 이동 — <code>goto</code></h2>
+<pre><code><span class="t-keyword">goto</span> <span class="t-target">단락이름</span></code></pre>
+<p>선택지 없이 다른 단락으로 넘어갑니다. <strong><code>goto</code></strong><strong> 아래의 문장은 실행되지 않습니다.</strong></p>
+<ul><li>지금 단락에서 이미 보여 준 본문(또는 이미지)이 있으면, 화면에 <strong>[계속]</strong> 버튼이 생기고 누르면 이동합니다.</li><li>보여 준 것이 없으면 <strong>곧바로</strong> 이동합니다. 그래서 아래처럼 내용 없이 조건만 따지는 &quot;분기 단락&quot;을 만들 수 있습니다.</li><li><code>goto</code> 앞에서 실행된 선택지는 무시됩니다.</li></ul>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">귀환</span>:                     <span class="t-comment"># 화면에 안 보이는 분기 단락</span>
+    <span class="t-keyword">if</span> 보물 &gt;= <span class="t-number">3</span>:
+        <span class="t-keyword">goto</span> <span class="t-target">엔딩_부자</span>
+    <span class="t-keyword">elif</span> 보물 &gt;= <span class="t-number">1</span>:
+        <span class="t-keyword">goto</span> <span class="t-target">엔딩_보통</span>
+    <span class="t-keyword">else</span>:
+        <span class="t-keyword">goto</span> <span class="t-target">엔딩_빈손</span></code></pre>
+<p>단락끼리 서로 <code>goto</code>만 하며 끝없이 도는 경우, 200번이 넘으면 오류로 멈춥니다.</p>
+<h2 id="12-엔딩--end">12. 엔딩 — <code>end</code></h2>
+<pre><code><span class="t-keyword">end</span> <span class="t-string">&quot;엔딩 제목&quot;</span>
+<span class="t-keyword">end</span>                    <span class="t-comment"># 제목 없이</span></code></pre>
+<ul><li>이야기가 끝납니다. 본문 아래에 <code>— 엔딩 제목 —</code>이 표시되고, [뒤로 가기 / 처음부터 다시 하기 / 타이틀로] 버튼이 나옵니다.</li><li><code>end</code> 아래의 문장, 그리고 그 단락에서 앞서 만든 선택지는 모두 무시됩니다.</li><li>엔딩은 몇 개든 만들 수 있습니다. 런처와 검사 결과에 엔딩 개수가 표시됩니다.</li></ul>
+<h2 id="13-실행-순서-이해하기">13. 실행 순서 이해하기</h2>
+<p>단락은 다음 순서로 처리됩니다. 이것만 알면 대부분의 동작을 예상할 수 있습니다.</p>
+<ol><li>단락에 들어가면 먼저 그 단락의 방문 횟수(<code>visited</code>)가 1 늘어납니다.</li><li>문장을 <strong>위에서 아래로</strong> 실행하며 화면을 채웁니다. 본문은 문단으로 쌓이고, 이미지는 마지막 것으로 정해지고, 선택지는 조건이 맞는 것만 목록에 쌓입니다. <code>set</code>은 그 자리에서 바로 값을 바꿉니다.</li><li><code>goto</code>나 <code>end</code>를 만나면 그 자리에서 멈춥니다.</li><li>화면이 표시되고 플레이어가 선택지를 고릅니다.</li><li>고른 선택지에 효과 블록이 있으면 실행하고, 다음 단락으로 가서 1부터 반복합니다.</li></ol>
+<p>순서가 중요한 예: 아래 단락에서 본문은 <code>set</code>보다 먼저 실행되므로 <strong>바뀌기 전</strong> 값이 보입니다.</p>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">함정</span>:
+    <span class="t-string">&quot;체력: </span><span class="t-interp">{체력}</span><span class="t-string">&quot;</span>           <span class="t-comment"># 바뀌기 전 값</span>
+    <span class="t-keyword">set</span> <span class="t-variable">체력</span> -= <span class="t-number">3</span>
+    <span class="t-string">&quot;가시에 찔렸다! 체력: </span><span class="t-interp">{체력}</span><span class="t-string">&quot;</span>   <span class="t-comment"># 바뀐 뒤 값</span></code></pre>
+<p>선택지의 조건도 그 줄이 실행되는 시점의 값으로 판단합니다. 같은 단락에서 <code>set</code>으로 값을 바꾼 뒤의 선택지에는 바뀐 값이 적용됩니다.</p>
+<h2 id="14-자주-쓰는-패턴">14. 자주 쓰는 패턴</h2>
+<h3 id="아이템을-한-번만-얻기">아이템을 한 번만 얻기</h3>
+<p>선택지 효과로 값을 바꾸고 같은 단락으로 돌아오면, 조건 때문에 선택지가 사라집니다.</p>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">오두막</span>:
+    <span class="t-string">&quot;먼지 쌓인 오두막.&quot;</span>
+    <span class="t-keyword">if</span> <span class="t-keyword">not</span> 횃불:
+        <span class="t-string">&quot;구석에 횃불이 있다.&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;횃불을 챙긴다&quot;</span> <span class="t-keyword">if</span> <span class="t-keyword">not</span> 횃불 <span class="t-arrow">-&gt;</span> <span class="t-target">오두막</span>:
+        <span class="t-keyword">set</span> <span class="t-variable">횃불</span> = <span class="t-const">true</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;밖으로 나간다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">숲</span></code></pre>
+<h3 id="처음-방문과-다시-방문을-다르게">처음 방문과 다시 방문을 다르게</h3>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">광장</span>:
+    <span class="t-keyword">if</span> <span class="t-func">visited</span>(<span class="t-string">&quot;광장&quot;</span>) == <span class="t-number">1</span>:
+        <span class="t-string">&quot;분수대 주변으로 사람들이 북적인다.&quot;</span>
+    <span class="t-keyword">else</span>:
+        <span class="t-string">&quot;광장은 여전히 붐빈다.&quot;</span></code></pre>
+<h3 id="체력과-게임-오버">체력과 게임 오버</h3>
+<pre><code><span class="t-keyword">default</span> <span class="t-variable">체력</span> = <span class="t-number">10</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">함정</span>:
+    <span class="t-string">&quot;날카로운 가시가 발을 찔렀다.&quot;</span>
+    <span class="t-keyword">set</span> <span class="t-variable">체력</span> -= <span class="t-number">3</span>
+    <span class="t-keyword">if</span> 체력 &lt;= <span class="t-number">0</span>:
+        <span class="t-keyword">goto</span> <span class="t-target">죽음</span>                <span class="t-comment"># 본문이 있으므로 [계속]을 누르면 이동</span>
+    <span class="t-string">&quot;체력이 </span><span class="t-interp">{체력}</span><span class="t-string"> 남았다.&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;절뚝이며 나아간다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">복도</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">죽음</span>:
+    <span class="t-string">&quot;눈앞이 캄캄해진다…&quot;</span>
+    <span class="t-keyword">end</span> <span class="t-string">&quot;모험의 끝&quot;</span></code></pre>
+<h3 id="주사위-판정">주사위 판정</h3>
+<p>굴리는 순간을 선택지 효과에 두면 &quot;던진다&quot;는 느낌이 납니다.</p>
+<pre><code><span class="t-keyword">default</span> <span class="t-variable">민첩</span> = <span class="t-number">2</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">절벽</span>:
+    <span class="t-string">&quot;건너편까지는 꽤 멀다. (민첩 </span><span class="t-interp">{민첩}</span><span class="t-string">)&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;뛰어넘는다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">점프</span>:
+        <span class="t-keyword">set</span> <span class="t-variable">주사위</span> = <span class="t-func">random</span>(<span class="t-number">1</span>, <span class="t-number">6</span>)
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;돌아간다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">숲</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">점프</span>:
+    <span class="t-string">&quot;주사위: </span><span class="t-interp">{주사위}</span><span class="t-string"> + 민첩 </span><span class="t-interp">{민첩}</span><span class="t-string">&quot;</span>
+    <span class="t-keyword">if</span> 주사위 + 민첩 &gt;= <span class="t-number">6</span>:
+        <span class="t-string">&quot;가볍게 건너편에 내려섰다!&quot;</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;계속 간다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">건너편</span>
+    <span class="t-keyword">else</span>:
+        <span class="t-string">&quot;발이 미끄러졌다!&quot;</span>
+        <span class="t-keyword">set</span> <span class="t-variable">체력</span> -= <span class="t-number">2</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;기어오른다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">절벽</span></code></pre>
+<h3 id="무작위-사건">무작위 사건</h3>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">숲길</span>:
+    <span class="t-keyword">if</span> <span class="t-func">random</span>(<span class="t-number">1</span>, <span class="t-number">100</span>) &lt;= <span class="t-number">25</span>:
+        <span class="t-string">&quot;덤불에서 늑대가 뛰어나온다!&quot;</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;싸운다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">늑대와_싸움</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;도망친다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">숲</span>
+    <span class="t-keyword">else</span>:
+        <span class="t-string">&quot;조용한 숲길이다.&quot;</span>
+        <span class="t-keyword">choice</span> <span class="t-string">&quot;계속 걷는다&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">숲_깊은곳</span></code></pre>
+<h3 id="상점과-반복-선택">상점과 반복 선택</h3>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">상점</span>:
+    <span class="t-string">&quot;가진 금화: </span><span class="t-interp">{금화}</span><span class="t-string">  /  물약: </span><span class="t-interp">{물약}</span><span class="t-string">&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;물약 사기 (3금화)&quot;</span> <span class="t-keyword">if</span> 금화 &gt;= <span class="t-number">3</span> <span class="t-arrow">-&gt;</span> <span class="t-target">상점</span>:
+        <span class="t-keyword">set</span> <span class="t-variable">금화</span> -= <span class="t-number">3</span>
+        <span class="t-keyword">set</span> <span class="t-variable">물약</span> += <span class="t-number">1</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;나가기&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">마을</span></code></pre>
+<h3 id="여러-조건을-모아-엔딩-나누기">여러 조건을 모아 엔딩 나누기</h3>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">마지막</span>:
+    <span class="t-keyword">if</span> 동료 == <span class="t-string">&quot;엘라&quot;</span> <span class="t-keyword">and</span> 호감도 &gt;= <span class="t-number">5</span>:
+        <span class="t-keyword">goto</span> <span class="t-target">엔딩_함께</span>
+    <span class="t-keyword">elif</span> 보물 &gt;= <span class="t-number">3</span>:
+        <span class="t-keyword">goto</span> <span class="t-target">엔딩_부자</span>
+    <span class="t-keyword">else</span>:
+        <span class="t-keyword">goto</span> <span class="t-target">엔딩_홀로</span></code></pre>
+<h3 id="글자-변수로-선택-기억하기">글자 변수로 선택 기억하기</h3>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">갈림길</span>:
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;북쪽 길&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">마을</span>:
+        <span class="t-keyword">set</span> <span class="t-variable">온길</span> = <span class="t-string">&quot;북쪽&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;남쪽 길&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">마을</span>:
+        <span class="t-keyword">set</span> <span class="t-variable">온길</span> = <span class="t-string">&quot;남쪽&quot;</span>
+
+<span class="t-keyword">label</span> <span class="t-labeldef">마을</span>:
+    <span class="t-string">&quot;</span><span class="t-interp">{온길}</span><span class="t-string">에서 온 나그네군.&quot;</span>
+    <span class="t-keyword">if</span> 온길 == <span class="t-string">&quot;북쪽&quot;</span>:
+        <span class="t-string">&quot;산을 넘어왔다니 대단하구려.&quot;</span></code></pre>
+<h3 id="종이-게임북처럼-번호-단락-쓰기">종이 게임북처럼 번호 단락 쓰기</h3>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">1</span>:
+    <span class="t-string">&quot;당신은 동굴 앞에 서 있다.&quot;</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;들어간다 (147로 가시오)&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">147</span>
+    <span class="t-keyword">choice</span> <span class="t-string">&quot;돌아간다 (82로 가시오)&quot;</span> <span class="t-arrow">-&gt;</span> <span class="t-target">82</span></code></pre>
+<p><code>game.json</code>의 <code>&quot;start&quot;</code>를 <code>&quot;1&quot;</code>로 바꾸면 1번 단락에서 시작합니다.</p>
+<h3 id="같은-장면에서-그림만-바꾸기">같은 장면에서 그림만 바꾸기</h3>
+<pre><code><span class="t-keyword">label</span> <span class="t-labeldef">방</span>:
+    <span class="t-keyword">image</span> <span class="t-string">&quot;room.png&quot;</span>
+    <span class="t-keyword">if</span> 촛불:
+        <span class="t-keyword">image</span> <span class="t-string">&quot;room_lit.png&quot;</span>
+        <span class="t-string">&quot;촛불이 방 안을 밝힌다.&quot;</span>
+    <span class="t-keyword">else</span>:
+        <span class="t-string">&quot;어둠 속에 무언가 있다.&quot;</span></code></pre>
+<h2 id="15-오류-메시지와-해결-방법">15. 오류 메시지와 해결 방법</h2>
+<p>스크립트에 문제가 있으면 게임 화면과 런처의 <strong>스크립트 검사</strong>에 <code>파일:줄  내용</code> 형식으로 나옵니다. 위치(<code>main.gb:12</code>)를 누르면 편집기에서 그 줄이 열립니다.</p>
+<table><tr><th>메시지</th><th>흔한 원인</th><th>해결</th></tr><tr><td>알 수 없는 문장입니다</td><td><code>chioce</code>처럼 문법 단어 오타, 본문의 따옴표 빠짐</td><td>단어 철자와 따옴표 확인</td></tr><tr><td>들여쓰기가 위 줄들과 맞지 않습니다</td><td>같은 블록인데 칸 수가 다름 (3칸/4칸 섞임)</td><td>같은 블록은 같은 칸 수로</td></tr><tr><td>label 줄은 콜론(:)으로 끝나야 합니다</td><td><code>label 동굴</code> 처럼 <code>:</code> 빠짐</td><td><code>label 동굴:</code></td></tr><tr><td>조건 줄은 콜론(:)으로 끝나야 합니다</td><td><code>if 열쇠</code> 처럼 <code>:</code> 빠짐</td><td><code>if 열쇠:</code></td></tr><tr><td>문자열을 닫는 따옴표가 없습니다</td><td><code>&quot;글</code> 처럼 닫는 따옴표 빠짐</td><td>따옴표 짝 맞추기</td></tr><tr><td>선택지에 이동할 단락이 없습니다</td><td><code>-&gt;</code> 빠짐</td><td><code>choice &quot;글&quot; -&gt; 단락</code></td></tr><tr><td>선택지가 가리키는 단락 &#x27;x&#x27; 이(가) 없습니다</td><td>단락 이름 오타, 아직 안 만든 단락</td><td>이름 확인 또는 단락 만들기</td></tr><tr><td>단락 &#x27;x&#x27;이(가) 이미 …에 있습니다</td><td>같은 이름의 단락이 두 개</td><td>하나의 이름을 바꾸기</td></tr><tr><td>단락 이름 &#x27;x&#x27;이(가) 올바르지 않습니다</td><td>이름에 띄어쓰기나 기호</td><td><code>동굴_입구</code>처럼 밑줄 사용</td></tr><tr><td>식을 이해할 수 없습니다</td><td><code>=&gt;</code>, <code>=&lt;</code>, <code>if 금화 = 3</code> 처럼 잘못된 연산</td><td><code>&gt;=</code>, <code>&lt;=</code>, <code>==</code></td></tr><tr><td>else 앞에 짝이 되는 if 가 없습니다</td><td><code>else</code>의 들여쓰기가 <code>if</code>와 다름</td><td><code>if</code>와 같은 칸에 맞추기</td></tr><tr><td>선택지 블록 안에는 본문을 쓸 수 없습니다</td><td>효과 블록에 본문을 넣음</td><td>본문은 이동할 단락에 쓰기</td></tr><tr><td>단락에 내용이 없습니다</td><td><code>label</code> 아래 줄을 들여쓰지 않음</td><td>내용 줄을 들여쓰기</td></tr><tr><td>최상위 문장은 들여쓰지 않아야 합니다</td><td><code>label</code>이나 <code>default</code>를 들여씀</td><td>맨 앞으로</td></tr><tr><td>label 밖에는 label 과 default 만 쓸 수 있습니다</td><td>단락 내용을 들여쓰지 않음</td><td>단락 안 문장은 들여쓰기</td></tr></table>
+<p>검사에서 <strong>경고</strong>나 <strong>참고</strong>로 나오는 항목은 게임이 실행은 되지만 확인해 볼 만한 것들입니다.</p>
+<table><tr><th>경고</th><th>뜻</th></tr><tr><td>시작 단락에서 갈 수 있는 길이 없습니다</td><td>어떤 선택지·goto도 이 단락을 가리키지 않음</td></tr><tr><td>막다른 곳이 됩니다</td><td>선택지·goto·end가 하나도 없는 단락</td></tr><tr><td>조건에 따라 선택지가 하나도 없을 수 있습니다</td><td>모든 선택지에 조건이 걸려 있음</td></tr><tr><td>값을 넣는 곳(default/set)이 없습니다</td><td>변수 이름 오타일 가능성</td></tr><tr><td>대소문자가 실제 파일과 다릅니다</td><td>다른 운영체제에서 이미지가 안 보임</td></tr></table>
+<h2 id="16-편집기와-실행">16. 편집기와 실행</h2>
+<p>Ren&#x27;Py처럼 스크립트는 <strong>평소 쓰는 텍스트 편집기</strong>(VS Code 추천)로 쓰고, 런처와 게임 창으로 확인합니다.</p>
+<h3 id="처음-한-번-편집기-준비">처음 한 번: 편집기 준비</h3>
+<ol><li><a href="https://code.visualstudio.com">VS Code</a>를 설치합니다. (다른 편집기도 됩니다)</li><li>런처의 <strong>VS Code 확장 설치</strong>를 누릅니다. <code>.gb</code> 파일에 색이 입혀지고, 들여쓰기가 4칸 공백으로 맞춰지고, 문장 틀(조각)을 쓸 수 있게 됩니다.</li><li>다른 편집기를 쓰려면 <strong>편집기 고르기</strong>에서 고릅니다. 목록에 없으면 <strong>직접 지정…</strong> 에 실행 명령을 적습니다. <code>{file}</code>은 파일, <code>{line}</code>은 줄 번호, <code>{project}</code>는 프로젝트 폴더로 바뀝니다.</li></ol>
+<p>예) code -g {file}:{line} 예) subl {file}:{line} 예) notepad++ -n{line} {file}</p>
+<h3 id="쓰고-확인하기">쓰고 확인하기</h3>
+<ul><li><strong>스크립트 편집하기</strong>: 편집기로 프로젝트의 스크립트를 엽니다. (VS Code는 프로젝트 폴더째로 열려서 왼쪽에서 다른 파일도 볼 수 있습니다)</li><li><strong>실행하기</strong>: 게임 창을 <strong>개발 모드</strong>로 엽니다. 게임 창을 띄워 둔 채 편집기에서 저장하면 바로 다시 읽어서, 보고 있던 단락이 새 내용으로 바뀝니다.</li><li>오류가 있으면 게임 창에 오류 목록이 나옵니다. 위치를 누르거나 <code>F4</code>를 누르면 편집기에서 그 줄이 열립니다. 고쳐서 저장하면 저절로 게임으로 돌아옵니다.</li><li>런처의 프로젝트 이름 아래에는 단락·선택지 수와 오류·경고 수가 나오고, 스크립트를 저장할 때마다 새로 계산됩니다.</li></ul>
+<h3 id="vs-code-확장의-문장-틀">VS Code 확장의 문장 틀</h3>
+<p>확장을 설치하면 아래 단어를 치고 <code>Tab</code>(또는 목록에서 고르기)을 누를 때 틀이 들어갑니다. 틀 안에서는 <code>Tab</code>으로 다음 칸으로 넘어갑니다.</p>
+<table><tr><th>입력</th><th>들어가는 것</th></tr><tr><td><code>label</code></td><td>새 단락</td></tr><tr><td><code>choice</code> / <code>choiceif</code> / <code>choiceset</code></td><td>선택지 / 조건 있는 선택지 / 고를 때 값을 바꾸는 선택지</td></tr><tr><td><code>text</code></td><td>여러 줄 본문 (<code>&quot;&quot;&quot;</code>)</td></tr><tr><td><code>image</code></td><td>이미지</td></tr><tr><td><code>if</code> / <code>elif</code></td><td>조건 분기</td></tr><tr><td><code>default</code> / <code>set</code></td><td>변수 처음 값 / 값 바꾸기</td></tr><tr><td><code>goto</code> / <code>end</code></td><td>이동 / 엔딩</td></tr></table>
+<h3 id="게임-창-단축키">게임 창 단축키</h3>
+<p>macOS에서는 <code>Ctrl</code> 대신 <code>Cmd</code>를 눌러도 됩니다.</p>
+<table><tr><th>키</th><th>기능</th></tr><tr><td><code>1</code>~<code>9</code>, 마우스</td><td>선택지 고르기 (<code>Space</code>·<code>Enter</code>: 선택지가 하나뿐일 때)</td></tr><tr><td><code>Backspace</code></td><td>뒤로 가기</td></tr><tr><td><code>Ctrl+S</code> / <code>Ctrl+O</code></td><td>저장 / 불러오기 (10칸)</td></tr><tr><td><code>Ctrl+N</code></td><td>처음부터</td></tr><tr><td><code>Ctrl+=</code> / <code>Ctrl+-</code></td><td>글자 크기</td></tr><tr><td><code>Ctrl+T</code></td><td>종이 / 밤 테마 바꾸기</td></tr><tr><td><code>F11</code> 또는 <code>Alt+Enter</code></td><td>전체 화면</td></tr><tr><td><code>↑</code> <code>↓</code> <code>PageUp</code> <code>PageDown</code>, 휠</td><td>긴 본문 굴리기</td></tr></table>
+<p>개발 모드(런처의 <strong>실행하기</strong>)에서만 쓰는 키:</p>
+<table><tr><th>키</th><th>기능</th></tr><tr><td><code>F4</code></td><td>편집기에서 지금 단락(오류 화면이면 첫 오류) 열기</td></tr><tr><td><code>F5</code></td><td>스크립트 다시 읽기 (보통은 저장하면 저절로 됩니다)</td></tr><tr><td><code>F6</code></td><td>단락으로 바로 이동 (변수는 그대로)</td></tr><tr><td><code>F2</code></td><td>변수와 방문 횟수 보기</td></tr><tr><td><code>F7</code></td><td>검사</td></tr><tr><td><code>F1</code></td><td>이 가이드</td></tr></table>
+<p>창 크기를 바꾸면 글자·버튼·그림이 함께 커지고 작아집니다. 한글 글꼴(나눔고딕·나눔명조)이 프로그램에 들어 있어서 어느 운영체제에서나 똑같이 보입니다.</p>
+<h3 id="런처의-다른-기능">런처의 다른 기능</h3>
+<ul><li><strong>스크립트 검사</strong>: 문제 목록을 보여 줍니다. 항목을 누르면 편집기에서 그 줄이 열립니다.</li><li><strong>HTML 로 내보내기</strong>: 스크립트와 그림을 모두 담은 HTML 파일 하나를 프로젝트의 <code>dist</code> 폴더에 만듭니다. 받은 사람은 브라우저로 열기만 하면 플레이할 수 있고 휴대폰에서도 열립니다. 저장은 그 브라우저에 됩니다.</li><li><strong>삭제</strong>(프로젝트 목록 아래, 또는 <code>Delete</code> 키): 고른 프로젝트 폴더를 확인 후 바로 지웁니다. 휴지통을 거치지 않으므로 되돌릴 수 없습니다. 필요하면 먼저 <strong>프로젝트 폴더</strong>를 열어 복사해 두세요.</li><li><strong>배포 파일 만들기</strong>: Python과 pygame-ce가 설치된 컴퓨터에서 <code>python play.py</code>로 실행하는 zip 파일을 만듭니다.</li></ul>
+<h2 id="17-설정--gamejson">17. 설정 — <code>game.json</code></h2>
+<p>프로젝트 폴더의 <code>game.json</code>은 런처의 <strong>설정 (game.json)</strong> 버튼으로 편집기에서 열 수 있습니다. 저장하면 게임 창에 바로 반영됩니다.</p>
+<table><tr><th>항목</th><th>기본값</th><th>설명</th></tr><tr><td><code>title</code></td><td></td><td>게임 제목 (타이틀 화면, 창 제목)</td></tr><tr><td><code>author</code></td><td></td><td>지은이 (타이틀 화면)</td></tr><tr><td><code>start</code></td><td><code>&quot;start&quot;</code></td><td>시작 단락 이름</td></tr><tr><td><code>window</code></td><td><code>[1024, 760]</code></td><td>처음 창 크기 [가로, 세로]. 이 크기일 때 글자 크기가 <code>font_size</code> 그대로이고, 창을 키우면 함께 커집니다</td></tr><tr><td><code>font</code></td><td><code>&quot;&quot;</code></td><td>본문 글꼴. 비우면 고딕체(나눔고딕), <code>&quot;serif&quot;</code>는 명조체(나눔명조), 또는 프로젝트 폴더에 넣은 글꼴 파일 <code>&quot;fonts/내글꼴.ttf&quot;</code> (게임 창에서만 적용되고 HTML에서는 고딕/명조 중 하나로 보입니다)</td></tr><tr><td><code>font_size</code></td><td><code>15</code></td><td>본문 글자 크기</td></tr><tr><td><code>show_locked_choices</code></td><td><code>false</code></td><td><code>true</code>면 조건이 안 맞는 선택지를 흐리게 보여 줌</td></tr><tr><td><code>title_image</code></td><td><code>&quot;&quot;</code></td><td>타이틀 화면 이미지 (images 폴더 기준)</td></tr><tr><td><code>theme</code></td><td><code>&quot;paper&quot;</code></td><td><code>&quot;paper&quot;</code>(종이) 또는 <code>&quot;night&quot;</code>(어두운 화면)</td></tr></table>
+<p>JSON 형식이므로 글자는 큰따옴표로 감싸고, 항목 사이에 쉼표를 넣고, 마지막 항목 뒤에는 쉼표를 넣지 않습니다.</p>
+<h2 id="18-문법-요약표">18. 문법 요약표</h2>
+<table><tr><th>문법</th><th>예</th></tr><tr><td>주석</td><td><code># 메모</code></td></tr><tr><td>변수 처음 값</td><td><code>default 금화 = 10</code></td></tr><tr><td>단락</td><td><code>label 동굴:</code></td></tr><tr><td>본문</td><td><code>&quot;글&quot;</code> · <code>&#x27;글&#x27;</code> · <code>&quot;&quot;&quot;여러 줄&quot;&quot;&quot;</code></td></tr><tr><td>변수 끼워 넣기</td><td><code>&quot;금화 {금화}개&quot;</code></td></tr><tr><td>이미지</td><td><code>image &quot;cave.png&quot;</code> · <code>image none</code></td></tr><tr><td>선택지</td><td><code>choice &quot;들어간다&quot; -&gt; 동굴</code></td></tr><tr><td>조건 선택지</td><td><code>choice &quot;연다&quot; if 열쇠 -&gt; 방</code></td></tr><tr><td>효과 선택지</td><td><code>choice &quot;산다&quot; -&gt; 상점:</code> + 들여쓴 <code>set</code></td></tr><tr><td>값 바꾸기</td><td><code>set 금화 = 3</code> · <code>set 금화 += 1</code> · <code>set 금화 -= 1</code></td></tr><tr><td>조건 분기</td><td><code>if 조건:</code> · <code>elif 조건:</code> · <code>else:</code></td></tr><tr><td>이동</td><td><code>goto 동굴</code></td></tr><tr><td>엔딩</td><td><code>end &quot;제목&quot;</code> · <code>end</code></td></tr><tr><td>비교</td><td><code>==</code> <code>!=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td></tr><tr><td>논리</td><td><code>and</code> <code>or</code> <code>not</code> <code>( )</code></td></tr><tr><td>계산</td><td><code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>//</code> <code>%</code></td></tr><tr><td>참/거짓</td><td><code>true</code> <code>false</code> <code>참</code> <code>거짓</code></td></tr><tr><td>방문 횟수</td><td><code>visited(&quot;동굴&quot;)</code></td></tr><tr><td>무작위 수</td><td><code>random(1, 6)</code></td></tr></table>
+</main>
+</div>
+</body>
+</html>

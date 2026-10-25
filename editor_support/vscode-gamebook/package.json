@@ -1,0 +1,32 @@
+{
+  "name": "gamebook-script",
+  "displayName": "GameBook Script (게임북 스크립트)",
+  "description": "GameBook Studio 의 .gb 스크립트: 구문 강조, 들여쓰기, 주석, 문장 조각",
+  "version": "0.2.0",
+  "publisher": "gamebook-studio",
+  "engines": { "vscode": "^1.60.0" },
+  "categories": ["Programming Languages", "Snippets"],
+  "contributes": {
+    "languages": [{
+      "id": "gamebook",
+      "aliases": ["GameBook Script", "게임북 스크립트"],
+      "extensions": [".gb"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "gamebook",
+      "scopeName": "source.gamebook",
+      "path": "./syntaxes/gamebook.tmLanguage.json"
+    }],
+    "snippets": [{ "language": "gamebook", "path": "./snippets/gamebook.json" }],
+    "configurationDefaults": {
+      "[gamebook]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+        "editor.detectIndentation": false,
+        "editor.wordWrap": "on",
+        "files.encoding": "utf8"
+      }
+    }
+  }
+}

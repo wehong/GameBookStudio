@@ -1,0 +1,14 @@
+{
+  "새 단락": { "prefix": "label", "body": ["label ${1:단락이름}:", "    \"$2\"", "    choice \"$3\" -> ${4:다음단락}", "$0"], "description": "label 이름: (단락)" },
+  "선택지": { "prefix": "choice", "body": ["choice \"$1\" -> ${2:단락}$0"], "description": "choice \"글\" -> 단락" },
+  "조건 선택지": { "prefix": "choiceif", "body": ["choice \"$1\" if ${2:조건} -> ${3:단락}$0"], "description": "choice \"글\" if 조건 -> 단락" },
+  "효과가 있는 선택지": { "prefix": "choiceset", "body": ["choice \"$1\" -> ${2:단락}:", "    set ${3:변수} ${4:+=} ${5:1}$0"], "description": "고를 때 변수를 바꾸는 선택지" },
+  "여러 줄 본문": { "prefix": "text", "body": ["\"\"\"", "$1", "\"\"\"$0"], "description": "\"\"\" 여러 줄 본문 \"\"\"" },
+  "이미지": { "prefix": "image", "body": ["image \"${1:그림.png}\"$0"], "description": "image \"파일\"" },
+  "조건 분기": { "prefix": "if", "body": ["if ${1:조건}:", "    \"$2\"", "else:", "    \"$3\"$0"], "description": "if … else" },
+  "elif": { "prefix": "elif", "body": ["elif ${1:조건}:", "    $0"], "description": "elif 조건:" },
+  "변수 바꾸기": { "prefix": "set", "body": ["set ${1:이름} ${2:=} ${3:값}$0"], "description": "set 이름 = 값" },
+  "변수 처음 값": { "prefix": "default", "body": ["default ${1:이름} = ${2:0}$0"], "description": "default 이름 = 값" },
+  "이동": { "prefix": "goto", "body": ["goto ${1:단락}$0"], "description": "goto 단락" },
+  "엔딩": { "prefix": "end", "body": ["end \"${1:엔딩 제목}\"$0"], "description": "end \"제목\"" }
+}

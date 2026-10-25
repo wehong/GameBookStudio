@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "GameBook Script",
+  "scopeName": "source.gamebook",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#block" },
+    { "include": "#label" },
+    { "include": "#statement" },
+    { "include": "#string" },
+    { "include": "#expression" }
+  ],
+  "repository": {
+    "comment": { "name": "comment.line.number-sign.gamebook", "match": "#.*$" },
+    "block": {
+      "name": "string.quoted.triple.gamebook",
+      "begin": "\"\"\"", "end": "\"\"\"",
+      "patterns": [{ "include": "#interp" }]
+    },
+    "string": {
+      "patterns": [
+        { "name": "string.quoted.double.gamebook", "begin": "\"", "end": "\"",
+          "patterns": [{ "name": "constant.character.escape.gamebook", "match": "\\\\." }, { "include": "#interp" }] },
+        { "name": "string.quoted.single.gamebook", "begin": "'", "end": "'",
+          "patterns": [{ "name": "constant.character.escape.gamebook", "match": "\\\\." }, { "include": "#interp" }] }
+      ]
+    },
+    "interp": { "name": "variable.other.interpolated.gamebook", "match": "\\{[\\p{L}\\p{N}_]+\\}" },
+    "label": {
+      "match": "^(label)\\s+([\\p{L}\\p{N}_]+)\\s*(:)",
+      "captures": { "1": { "name": "keyword.control.label.gamebook" }, "2": { "name": "entity.name.function.label.gamebook" },
+                    "3": { "name": "punctuation.separator.gamebook" } }
+    },
+    "statement": {
+      "patterns": [
+        { "match": "^\\s*(goto)\\s+([\\p{L}\\p{N}_]+)",
+          "captures": { "1": { "name": "keyword.control.goto.gamebook" }, "2": { "name": "entity.name.function.target.gamebook" } } },
+        { "match": "^\\s*(set|default)\\s+([\\p{L}\\p{N}_]+)",
+          "captures": { "1": { "name": "keyword.other.gamebook" }, "2": { "name": "variable.other.gamebook" } } },
+        { "match": "^\\s*(choice|image|end|if|elif|else)\\b", "captures": { "1": { "name": "keyword.control.gamebook" } } },
+        { "match": "(->)\\s*([\\p{L}\\p{N}_]+)",
+          "captures": { "1": { "name": "keyword.operator.arrow.gamebook" }, "2": { "name": "entity.name.function.target.gamebook" } } }
+      ]
+    },
+    "expression": {
+      "patterns": [
+        { "name": "keyword.operator.logical.gamebook", "match": "\\b(and|or|not|if)\\b" },
+        { "name": "constant.language.gamebook", "match": "\\b(true|false|True|False|none|None)\\b|참|거짓|없음" },
+        { "name": "support.function.gamebook", "match": "\\b(visited|random)(?=\\()" },
+        { "name": "constant.numeric.gamebook", "match": "\\b\\d+(\\.\\d+)?\\b" },
+        { "name": "keyword.operator.gamebook", "match": "==|!=|<=|>=|\\+=|-=|//|[-+*/%<>=]" }
+      ]
+    }
+  }
+}

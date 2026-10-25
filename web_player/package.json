@@ -1,0 +1,7 @@
+{
+  "name": "gamebook-web-player",
+  "private": true,
+  "description": "HTML 내보내기용 웹 플레이어 (빌드할 때만 필요, 게임북 도구를 쓸 때는 필요 없음)",
+  "scripts": { "build": "node build.js" },
+  "devDependencies": { "esbuild": "0.28.2" }
+}

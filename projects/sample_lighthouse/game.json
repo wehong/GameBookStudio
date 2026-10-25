@@ -1,0 +1,11 @@
+{
+  "title": "잊혀진 등대",
+  "author": "GameBook Studio 예제",
+  "start": "start",
+  "window": [1024, 780],
+  "font": "serif",
+  "font_size": 15,
+  "show_locked_choices": false,
+  "title_image": "title.png",
+  "theme": "paper"
+}
