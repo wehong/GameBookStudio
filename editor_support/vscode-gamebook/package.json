@@ -2,7 +2,7 @@
   "name": "gamebook-script",
   "displayName": "GameBook Script (게임북 스크립트)",
   "description": "GameBook Studio 의 .gb 스크립트: 구문 강조, 들여쓰기, 주석, 문장 조각",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "gamebook-studio",
   "engines": { "vscode": "^1.60.0" },
   "categories": ["Programming Languages", "Snippets"],

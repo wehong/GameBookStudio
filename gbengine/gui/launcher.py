@@ -232,6 +232,21 @@ class Launcher(Screen):
             ("title", "게임 제목", "예) 잊혀진 등대", ""),
         ], ok="만들기", on_done=done))
 
+    # ---------------------------------------------------------------- 프로그램 정보
+    def about(self):
+        import platform
+        try:
+            sdl = ".".join(str(n) for n in pygame.get_sdl_version())
+        except Exception:  # noqa: BLE001
+            sdl = "?"
+        body = (f"버전 {__version__}\n\n"
+                "텍스트 스크립트로 분기형 게임북을 만들고 플레이하는 도구입니다.\n\n"
+                f"Python {platform.python_version()} · pygame-ce {pygame.version.ver} · SDL {sdl}\n"
+                f"운영체제: {platform.system()} {platform.release()}\n"
+                f"설치 위치: {TOOL_DIR}\n\n"
+                "한글 글꼴: 나눔고딕 · 나눔명조 (NAVER, SIL Open Font License 1.1)")
+        self.app.push(Dialog(self.app, "GameBook Studio", body, [("닫기", None, True)]))
+
     # ---------------------------------------------------------------- 삭제
     def delete_dialog(self):
         p = self.current
@@ -356,8 +371,7 @@ class Launcher(Screen):
         y = R.y
         blit_text(surf, app.fonts, hf, "GameBook Studio", t["page"], (R.x, y))
         y += hf.get_linesize()
-        blit_text(surf, app.fonts, lf, f"버전 {__version__}", t["status_fg"], (R.x, y))
-        y += lf.get_linesize() + int(14 * u)
+        y += int(14 * u)
         blit_text(surf, app.fonts, lf, "프로젝트", t["status_fg"], (R.x, y))
         y += lf.get_linesize() + int(4 * u)
         bh = int(34 * u)
@@ -447,7 +461,8 @@ class Launcher(Screen):
                       ("배포 폴더", lambda: self.open_folder(DIST_DIR))]),
             ("도움", [("문법 가이드", self.guide),
                       ("편집기 고르기", self.editor_dialog),
-                      ("VS Code 확장 설치", self.install_vscode)]),
+                      ("VS Code 확장 설치", self.install_vscode),
+                      ("프로그램 정보", self.about)]),
         ]
         gap = int(14 * u)
         cw = (w - gap * (len(groups) - 1)) // len(groups)
@@ -517,7 +532,7 @@ class Launcher(Screen):
 
 
 def main(argv=None):
-    app = App(f"GameBook Studio {__version__}", BASE_SIZE, min_size=(640, 460))
+    app = App("GameBook Studio", BASE_SIZE, min_size=(640, 460))
     app.run(Launcher(app))
 
 

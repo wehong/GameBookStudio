@@ -13,7 +13,6 @@ import time
 
 import pygame
 
-from .. import __version__
 from ..editors import open_in_editor, open_url
 from ..lint import lint_project
 from ..project import Project
@@ -533,7 +532,7 @@ class Player(Screen):
             passed = " → ".join(page.labels_passed) if len(page.labels_passed) > 1 else page.label
             text = f"단락: {passed}{f'  ({label.loc})' if label else ''}      F4 편집기 · F5 다시 읽기 · F6 이동 · F2 변수 · F7 검사"
         elif self.dev:
-            text = f"개발 모드 · GameBook Studio {__version__} · 스크립트를 저장하면 자동으로 반영됩니다 · F1 가이드"
+            text = "개발 모드 · 스크립트를 저장하면 자동으로 반영됩니다 · F1 가이드"
         else:
             text = "1~9 선택 · Backspace 뒤로 · Ctrl+S 저장 · Ctrl+O 불러오기 · F11 전체 화면"
         f = app.font(11.5)
